@@ -53,6 +53,10 @@ function detectColoredText(messageBody) {
     const color = getComputedStyle(element).color;
     const text = getTextPreview(element);
 
+    const classification = classifyColor(color);
+
+    if (!classification) return;
+
     if (!text) return;
 
     // Ignore transparent text
@@ -70,9 +74,15 @@ function detectColoredText(messageBody) {
     detectedElements.set(element, color);
 
     console.log("[HueCue] Colored text detected:", {
-      text,
-      color,
-      element
+        text,
+        color,
+        family: classification.family,
+        hsl: {
+            hue: classification.hue,
+            saturation: classification.saturation,
+            lightness: classification.lightness
+        },
+        element     
     });
   });
 }
@@ -126,3 +136,84 @@ gmailObserver.observe(document.body, {
 });
 
 scheduleScan();
+
+function rgbToHsl(color) {
+  const match = color.match(
+    /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/
+  );
+
+  if (!match) return null;
+
+  const r = Number(match[1]) / 255;
+  const g = Number(match[2]) / 255;
+  const b = Number(match[3]) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  let h = 0;
+  let s = 0;
+  const l = (max + min) / 2;
+
+  if (max !== min) {
+    const delta = max - min;
+
+    s = l > 0.5
+      ? delta / (2 - max - min)
+      : delta / (max + min);
+
+    switch (max) {
+      case r:
+        h = (g - b) / delta + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / delta + 2;
+        break;
+      case b:
+        h = (r - g) / delta + 4;
+        break;
+    }
+
+    h *= 60;
+  }
+
+  return {
+    hue: Math.round(h),
+    saturation: Math.round(s * 100),
+    lightness: Math.round(l * 100)
+  };
+}
+
+function classifyColor(color) {
+  const hsl = rgbToHsl(color);
+
+  if (!hsl) return null;
+
+  const { hue, saturation, lightness } = hsl;
+
+  // Ignore grey and nearly colourless text in Version 1
+  if (saturation < 10) return null;
+
+  let family;
+
+  if (hue >= 345 || hue < 15) {
+    family = "red";
+  } else if (hue >= 15 && hue < 45) {
+    family = lightness < 35 ? "brown" : "orange";
+  } else if (hue >= 45 && hue < 70) {
+    family = "orange";
+  } else if (hue >= 70 && hue < 165) {
+    family = "green";
+  } else if (hue >= 165 && hue < 260) {
+    family = "blue";
+  } else if (hue >= 260 && hue < 300) {
+    family = "purple";
+  } else {
+    family = "pink";
+  }
+
+  return {
+    family,
+    ...hsl
+  };
+}
