@@ -1,5 +1,3 @@
-
-
 const MESSAGE_BODY_SELECTOR = ".a3s";
 const SCAN_DELAY = 300;
 

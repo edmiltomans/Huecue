@@ -8,17 +8,136 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <main class="container">
-    <h1>HueCue</h1>
-    <p class="subtitle">Make colored text easier to distinguish.</p>
+  <main class="popup-shell">
 
-    <label class="toggle-row">
-      <span>Enable HueCue</span>
-      <input type="checkbox" id="enabledToggle">
-    </label>
+    <!-- Main view -->
+    <section class="main-view" id="mainView">
+      <header class="header">
+        <div class="brand-icon">H</div>
+        <div class="brand-text">
+          <h1>HueCue</h1>
+          <span>Accessible reading</span>
+        </div>
+        <span class="version">0.1.0</span>
+      </header>
 
-    <p id="status">Loading...</p>
-    <p class="footer">Version 0.1.0</p>
+      <div class="intro">
+        <p class="intro-title">Make color work for everyone.</p>
+        <p class="intro-description">
+          Identify colored text using visual cues beyond color.
+        </p>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-info">
+          <span class="setting-title">HueCue</span>
+          <span class="setting-description" id="status">
+            Loading settings...
+          </span>
+        </div>
+
+        <label class="switch" aria-label="Enable or disable HueCue">
+          <input type="checkbox" id="enabledToggle">
+          <span class="switch-track">
+            <span class="switch-thumb"></span>
+          </span>
+        </label>
+      </div>
+
+      <button class="guide-button" id="openGuide" type="button">
+        <span class="guide-icon">◈</span>
+        <span class="guide-text">
+          <span class="guide-title">Color & Cue Guide</span>
+          <span class="guide-description">Explore all 7 visual cues</span>
+        </span>
+        <span class="guide-arrow">›</span>
+      </button>
+
+      <footer class="footer">
+        <span class="footer-dot"></span>
+        Your emails are processed locally.
+      </footer>
+    </section>
+
+    <!-- Color guide view -->
+    <section class="guide-view" id="guideView">
+      <header class="guide-header">
+        <button class="back-button" id="backButton" type="button"
+          aria-label="Back to main screen">
+          ←
+        </button>
+        <div>
+          <h2>Color & Cue Guide</h2>
+          <p>Recognize color without relying on color.</p>
+        </div>
+      </header>
+
+      <div class="guide-list">
+
+        <div class="cue-item">
+          <span class="cue-symbol">▲</span>
+          <div class="cue-info">
+            <span class="cue-name">Red</span>
+            <span class="cue-format">Bold text</span>
+          </div>
+        </div>
+
+        <div class="cue-item">
+          <span class="cue-symbol">◆</span>
+          <div class="cue-info">
+            <span class="cue-name">Orange</span>
+            <span class="cue-format">Bold + dotted underline</span>
+          </div>
+        </div>
+
+        <div class="cue-item">
+          <span class="cue-symbol">●</span>
+          <div class="cue-info">
+            <span class="cue-name">Green</span>
+            <span class="cue-format">Italic text</span>
+          </div>
+        </div>
+
+        <div class="cue-item">
+          <span class="cue-symbol">■</span>
+          <div class="cue-info">
+            <span class="cue-name">Brown</span>
+            <span class="cue-format">Italic + dotted underline</span>
+          </div>
+        </div>
+
+        <div class="cue-item">
+          <span class="cue-symbol">▼</span>
+          <div class="cue-info">
+            <span class="cue-name">Blue</span>
+            <span class="cue-format">Dashed underline</span>
+          </div>
+        </div>
+
+        <div class="cue-item">
+          <span class="cue-symbol">★</span>
+          <div class="cue-info">
+            <span class="cue-name">Purple</span>
+            <span class="cue-format">Bold + italic</span>
+          </div>
+        </div>
+
+        <div class="cue-item">
+          <span class="cue-symbol">✚</span>
+          <div class="cue-info">
+            <span class="cue-name">Pink / Magenta</span>
+            <span class="cue-format">Bold + italic + dashed underline</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="guide-note">
+        <span class="note-symbol">i</span>
+        <p>Every cue uses a unique symbol and text formatting pattern to help distinguish colors.</p>
+      </div>
+    </section>
+
   </main>
 
   <script src="popup.js"></script>
