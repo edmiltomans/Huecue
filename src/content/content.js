@@ -101,6 +101,8 @@ function scanGmailMessages() {
 }
 
 function scheduleScan() {
+  if (!hueCueEnabled) return;
+
   clearTimeout(scanTimer);
 
   scanTimer = setTimeout(() => {
@@ -114,11 +116,8 @@ function setHueCueState(enabled) {
   if (enabled) {
     scheduleScan();
   } else {
-    document
-      .querySelectorAll("[data-huecue-family]")
-      .forEach((element) => {
-        element.removeAttribute("data-huecue-family");
-      });
+    clearTimeout(scanTimer);
+    clearVisualCues();
   }
 }
 
@@ -132,8 +131,41 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   }
 });
 
-const gmailObserver = new MutationObserver(() => {
-  scheduleScan();
+function isRelevantMutation(mutation) {
+  const target = mutation.target.nodeType === Node.ELEMENT_NODE
+    ? mutation.target
+    : mutation.target.parentElement;
+
+  // Check whether the change happened inside a Gmail message
+  if (target?.closest(MESSAGE_BODY_SELECTOR)) {
+    return true;
+  }
+
+  // Check whether Gmail added a new message body
+  if (mutation.type === "childList") {
+    for (const node of mutation.addedNodes) {
+      if (node.nodeType !== Node.ELEMENT_NODE) continue;
+
+      if (
+        node.matches(MESSAGE_BODY_SELECTOR) ||
+        node.querySelector(MESSAGE_BODY_SELECTOR)
+      ) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+const gmailObserver = new MutationObserver((mutations) => {
+  if (!hueCueEnabled) return;
+
+  const relevantChange = mutations.some(isRelevantMutation);
+
+  if (relevantChange) {
+    scheduleScan();
+  }
 });
 
 gmailObserver.observe(document.body, {
@@ -250,4 +282,12 @@ function isInsideQuotedHistory(element) {
       '.gmail_quote, .gmail_extra, blockquote, [class*="gmail_quote"]'
     )
   );
+}
+
+function clearVisualCues() {
+  document
+    .querySelectorAll("[data-huecue-family]")
+    .forEach((element) => {
+      element.removeAttribute("data-huecue-family");
+    });
 }
