@@ -227,5 +227,18 @@ function classifyColor(color) {
 }
 
 function applyVisualCue(element, family) {
+  const parentCue = element.parentElement?.closest(
+    "[data-huecue-family]"
+  );
+
+  // Avoid duplicate glyphs inside the same color family
+  if (
+    parentCue &&
+    parentCue.getAttribute("data-huecue-family") === family
+  ) {
+    element.removeAttribute("data-huecue-family");
+    return;
+  }
+
   element.setAttribute("data-huecue-family", family);
 }
