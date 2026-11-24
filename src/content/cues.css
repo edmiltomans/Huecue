@@ -1,2 +1,86 @@
+/* HueCue Visual Cue Engine */
 
-/* HueCue visual cue styles  */
+/* Red */
+[data-huecue-family="red"] {
+  font-weight: 700 !important;
+}
+
+[data-huecue-family="red"]::before {
+  content: "▲";
+}
+
+/* Orange */
+[data-huecue-family="orange"] {
+  font-weight: 700 !important;
+  text-decoration-line: underline !important;
+  text-decoration-style: dotted !important;
+  text-decoration-thickness: 1.5px !important;
+}
+
+[data-huecue-family="orange"]::before {
+  content: "◆";
+}
+
+/* Green */
+[data-huecue-family="green"] {
+  font-style: italic !important;
+}
+
+[data-huecue-family="green"]::before {
+  content: "●";
+}
+
+/* Brown */
+[data-huecue-family="brown"] {
+  font-style: italic !important;
+  text-decoration-line: underline !important;
+  text-decoration-style: dotted !important;
+}
+
+[data-huecue-family="brown"]::before {
+  content: "■";
+}
+
+/* Blue */
+[data-huecue-family="blue"] {
+  text-decoration-line: underline !important;
+  text-decoration-style: dashed !important;
+  text-decoration-thickness: 1.5px !important;
+}
+
+[data-huecue-family="blue"]::before {
+  content: "▼";
+}
+
+/* Purple */
+[data-huecue-family="purple"] {
+  font-weight: 700 !important;
+  font-style: italic !important;
+}
+
+[data-huecue-family="purple"]::before {
+  content: "★";
+}
+
+/* Pink */
+[data-huecue-family="pink"] {
+  font-weight: 700 !important;
+  font-style: italic !important;
+  text-decoration-line: underline !important;
+  text-decoration-style: dashed !important;
+}
+
+[data-huecue-family="pink"]::before {
+  content: "✚";
+}
+
+/* Glyph appearance */
+[data-huecue-family]::before {
+  display: inline-block;
+  margin-inline-end: 0.25em;
+  font-size: 0.8em;
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  vertical-align: baseline;
+}

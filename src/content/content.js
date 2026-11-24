@@ -67,6 +67,8 @@ function detectColoredText(messageBody) {
 
     if (!text) return;
 
+    applyVisualCue(element, classification.family);
+
     const previousColor = detectedElements.get(element);
 
     if (previousColor === color) return;
@@ -110,6 +112,12 @@ function setHueCueState(enabled) {
 
   if (enabled) {
     scheduleScan();
+  } else {
+    document
+      .querySelectorAll("[data-huecue-family]")
+      .forEach((element) => {
+        element.removeAttribute("data-huecue-family");
+      });
   }
 }
 
@@ -216,4 +224,8 @@ function classifyColor(color) {
     family,
     ...hsl
   };
+}
+
+function applyVisualCue(element, family) {
+  element.setAttribute("data-huecue-family", family);
 }
