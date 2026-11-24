@@ -48,6 +48,7 @@ function detectColoredText(messageBody) {
   elements.forEach((element) => {
     if (!isVisible(element)) return;
     if (isInsideLink(element)) return;
+    if (isInsideQuotedHistory(element)) return;
     if (!ownsColor(element)) return;
 
     const color = getComputedStyle(element).color;
@@ -241,4 +242,12 @@ function applyVisualCue(element, family) {
   }
 
   element.setAttribute("data-huecue-family", family);
+}
+
+function isInsideQuotedHistory(element) {
+  return Boolean(
+    element.closest(
+      '.gmail_quote, .gmail_extra, blockquote, [class*="gmail_quote"]'
+    )
+  );
 }
