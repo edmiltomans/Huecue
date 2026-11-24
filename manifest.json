@@ -1,0 +1,27 @@
+
+{
+  "manifest_version": 3,
+  "name": "HueCue",
+  "version": "0.1.0",
+  "description": "A privacy-first extension that adds visual cues to colored text in Gmail.",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "src/content/content.js"
+      ],
+      "css": [
+        "src/content/cues.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html"
+  }
+}
